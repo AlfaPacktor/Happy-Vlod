@@ -9,6 +9,7 @@ PERSON_NAME = "Лейкопластер"
 PROMO_CODE = "17963"
 
 IMAGE_FILE_NAME = "my_photo.jpg"
+IMAGE_PATH = Path(__file__).parent / IMAGE_FILE_NAME
 
 def image_to_data_uri(path: Path) -> str:
     """
@@ -17,11 +18,9 @@ def image_to_data_uri(path: Path) -> str:
     """
     mime, _ = mimetypes.guess_type(str(path))
     if mime is None:
-        # На всякий случай, если тип не распознался
         mime = "image/jpeg"
     encoded = base64.b64encode(path.read_bytes()).decode("ascii")
     return f"data:{mime};base64,{encoded}"
-
 
 # --- Настройка страницы ---
 # Устанавливаем заголовок и иконку для вкладки в браузере.
@@ -29,8 +28,6 @@ def image_to_data_uri(path: Path) -> str:
 st.set_page_config(page_title="Промокод на День Рождения", page_icon="🎉")
 
 # --- CSS для кастомизации ---
-# Streamlit позволяет вставлять "сырой" CSS для тонкой настройки.
-# Здесь мы меняем стиль кнопок и основного блока, чтобы они лучше соответствовали заданию.
 st.markdown("""
 <style>
     /* Основной блок приложения */
@@ -40,9 +37,9 @@ st.markdown("""
     }
     /* Стиль для кнопок */
     .stButton > button {
-        width: 100%; /* Растягиваем кнопку на всю ширину колонки */
+        width: 100%;
         border: 1px solid grey;
-        border-radius: 8px; /* Скругленные углы */
+        border-radius: 8px;
         color: black;
         background-color: white;
         font-family: 'Calibri', sans-serif;
@@ -50,19 +47,15 @@ st.markdown("""
     .stButton > button:hover {
         border-color: black;
         color: black;
-        background-color: #f0f0f0; /* Легкое выделение при наведении */
+        background-color: #f0f0f0;
     }
 </style>
 """, unsafe_allow_html=True)
 
-
 # --- Логика приложения ---
-
-# Используем "состояние сессии" (session_state) для хранения информации
-# о том, вошел пользователь или нет. Это позволяет "помнить" состояние
-# между взаимодействиями (например, нажатиями кнопок).
-if 'authenticated' not in st.session_state:
-    st.session_state.authenticated = False
+# Инициализация состояния авторизации
+if "authenticated" not in st.session_state:
+    st.session_state["authenticated"] = False
 
 # --- Функция для проверки кодового слова ---
 def check_codeword():
@@ -70,42 +63,34 @@ def check_codeword():
     Безопасно проверяет введенное слово.
     Использует .get() для предотвращения KeyError.
     """
-    # .get() безопасно получает значение. Если ключа 'codeword_input' нет,
-    # он вернет пустую строку '' и не вызовет ошибку.
     entered_code = st.session_state.get("codeword_input", "")
-    
     if entered_code == SECRET_CODEWORD:
-        st.session_state.authenticated = True
-        # Удаляем ключ только если он существует, для чистоты
+        st.session_state["authenticated"] = True
         if "codeword_input" in st.session_state:
             del st.session_state["codeword_input"]
-    elif entered_code != "": # Показываем ошибку только если что-то было введено
+    elif entered_code != "":
         st.error("Кодовое слово неверно")
 
-
 # --- Отрисовка страниц ---
-
 # Если пользователь еще не аутентифицирован, показываем страницу входа.
-if not st.session_state.authenticated:
+if not st.session_state["authenticated"]:
     # Центрируем контент с помощью колонок
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
-        st.markdown(f"<h3 style='text-align: center; font-family: Calibri;'>Введи пароль, Мистер сосистер, колбастер и самый настоящий ... кто?.</h3>", unsafe_allow_html=True)
-        
-        # Поле для ввода. type="password" скроет вводимые символы.
-        # Ключ 'codeword_input' используется для доступа к значению в st.session_state
-        st.text_input(
-            "Кодовое слово", 
-            label_visibility="collapsed", 
-            key="codeword_input", 
-            type="password",
-            on_change=check_codeword # Проверяем при нажатии Enter
+        st.markdown(
+            "<h3 style='text-align: center; font-family: Calibri;'>Введи пароль, Мистер сосистер, колбастер и самый настоящий ... кто?.</h3>",
+            unsafe_allow_html=True
         )
-        
-        # Кнопка подтверждения
+
+        st.text_input(
+            "Кодовое слово",
+            label_visibility="collapsed",
+            key="codeword_input",
+            type="password",
+            on_change=check_codeword
+        )
         st.button("Подтвердить", on_click=check_codeword)
 
-# Если пользователь успешно вошел, показываем страницу с промокодом.
 # Если пользователь успешно вошел, показываем страницу с промокодом.
 else:
     # CSS для градиентного фона ВТОРОЙ страницы
@@ -118,48 +103,46 @@ else:
     }
     </style>
     """, unsafe_allow_html=True)
-    
+
     st.balloons()
-    
+
     st.markdown(
-        f"<h1 style='text-align: center; font-family: Calibri;'>{PERSON_NAME}, с днем рождения!</h1>",
+        f"<h1 style='text-align: center; font-family: Calibri;'>{PERSON_NAME}, с днем рождения!</h1>",</h1>",
         unsafe_allow_html=True
     )
     st.markdown(
-        "<p style='text-align: center; font-family: Calibri; font-size: 1.2em;'>Прими от нас со Светкой этот скромный дар :)</p>",
+        "<p style='text-align: center; font-family: Calibri; font-size: 1.2em;'>Прими от нас соСветкойй этот скромный дар :)</p>",
         unsafe_allow_html=True
     )
-    
+
     st.markdown("---")
 
-   IMAGE_DATA_URI = image_to_data_uri(IMAGE_PATH)
-# Заголовок перед картинкой (можно поменять текст или убрать)
-st.markdown(
-    "<h3 style='text-align: center; font-family: Calibri;'>Твоя картинка</h3>",
-    unsafe_allow_html=True
-)
-# Карточка с картинкой (оформление похоже на блок промокода)
-st.markdown(f"""
-<div style="
-    background-color: #FFFFFF;
-    border-radius: 0.5rem;
-    padding: 1em;
-    text-align: center;
-">
-    <img src="{IMAGE_DATA_URI}" style="max-width: 100%; border-radius: 0.5rem;" />
-</div>
-""", unsafe_allow_html=True)
+    # Блок с картинкой ПЕРЕД промокодом
+    IMAGE_DATA_URI = image_to_data_uri(IMAGE_PATH)
 
-    
     st.markdown(
-        "<h3 style='text-align: center; font-family: Calibri;'>Твой промокод на дрифт 28.10.2025:",
+        "<h3 style='text-align: center; font-family: Calibri;'>Твоя фотография</h3>",
         unsafe_allow_html=True
     )
-    
-    # Обновленный блок для промокода
     st.markdown(f"""
     <div style="
-        background-color: #FFFFFF;  /* ИЗМЕНЕНИЕ: Фон изменен на белый */
+        background-color: #FFFFFF;
+        border-radius: 0.5rem;
+        padding: 1em;
+        text-align: center;
+    ">
+        <img src="{IMAGE_DATA_URI}" style="max-width: 100%; border-radius: 0.5rem;" />
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Блок с промокодом
+    st.markdown(
+        "<h3 style='text-align: center; font-family: Calibri;'>Твой промокод на дрифт 28.10.2025:</h3>",
+        unsafe_allow_html=True
+    )
+    st.markdown(f"""
+    <div style="
+        background-color: #FFFFFF;
         border-radius: 0.5rem;
         padding: 1em;
         font-family: monospace;
