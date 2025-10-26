@@ -101,7 +101,7 @@ else:
         unsafe_allow_html=True
     )
     st.markdown(
-        "<p style='text-align: center; font-family: Calibri; font-size: 1.2em;'>Прими от нас со Светкой этот скромный дар :)</p>",
+        "<p style='text-align: center; font-family: Calibri; font-size: 1.2em;'>Прими от нас со Светланкой этот скромный дар :)</p>",
         unsafe_allow_html=True
     )
 
@@ -112,7 +112,7 @@ else:
         IMAGE_DATA_URI = image_to_data_uri(IMAGE_PATH)
 
         st.markdown(
-            "<h3 style='text-align: center; font-family: Calibri;'>Твоя картинка</h3>,</h3>",
+            "<h3 style='text-align: center; font-family: Calibri;'>Твой Сертификат</h3>,</h3>",
             unsafe_allow_html=True
         )
         st.markdown(f"""
