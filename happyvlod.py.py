@@ -114,7 +114,7 @@ else:
         IMAGE_DATA_URI = image_to_data_uri(IMAGE_PATH)
 
         st.markdown(
-            "<h3 style='text-align: center; font-family: Calibri;'>Твоя картинка</h3>",</h3>",
+            "<h3 style='text-align: center; font-family: Calibri;'>Твоя картинка</h3>,</h3>",
             unsafe_allow_html=True
         )
         st.markdown(f"""
