@@ -8,8 +8,10 @@ SECRET_CODEWORD = "Лейкопластер"
 PERSON_NAME = "Лейкопластер"
 PROMO_CODE = "17963"
 
+# Картинка рядом с app.py (или замените на "assets/my_photo.jpg", если лежит в папке assets)
 IMAGE_FILE_NAME = "my_photo.jpg"
 IMAGE_PATH = Path(__file__).parent / IMAGE_FILE_NAME
+
 
 def image_to_data_uri(path: Path) -> str:
     """
@@ -22,9 +24,9 @@ def image_to_data_uri(path: Path) -> str:
     encoded = base64.b64encode(path.read_bytes()).decode("ascii")
     return f"data:{mime};base64,{encoded}"
 
+
 # --- Настройка страницы ---
-# Устанавливаем заголовок и иконку для вкладки в браузере.
-# page_title должен быть первым вызовом st в скрипте.
+# Должен быть первым вызовом st.*
 st.set_page_config(page_title="Промокод на День Рождения", page_icon="🎉")
 
 # --- CSS для кастомизации ---
@@ -37,9 +39,9 @@ st.markdown("""
     }
     /* Стиль для кнопок */
     .stButton > button {
-        width: 100%;
+        width: 100%; /* Растягиваем кнопку на всю ширину колонки */
         border: 1px solid grey;
-        border-radius: 8px;
+        border-radius: 8px; /* Скругленные углы */
         color: black;
         background-color: white;
         font-family: 'Calibri', sans-serif;
@@ -47,15 +49,17 @@ st.markdown("""
     .stButton > button:hover {
         border-color: black;
         color: black;
-        background-color: #f0f0f0;
+        background-color: #f0f0f0; /* Легкое выделение при наведении */
     }
 </style>
 """, unsafe_allow_html=True)
 
+
 # --- Логика приложения ---
-# Инициализация состояния авторизации
-if "authenticated" not in st.session_state:
-    st.session_state["authenticated"] = False
+# Инициализация состояния аутентификации
+if 'authenticated' not in st.session_state:
+    st.session_state['authenticated'] = False
+
 
 # --- Функция для проверки кодового слова ---
 def check_codeword():
@@ -65,15 +69,17 @@ def check_codeword():
     """
     entered_code = st.session_state.get("codeword_input", "")
     if entered_code == SECRET_CODEWORD:
-        st.session_state["authenticated"] = True
+        st.session_state['authenticated'] = True
+        # Удаляем ключ только если он существует, для чистоты
         if "codeword_input" in st.session_state:
             del st.session_state["codeword_input"]
-    elif entered_code != "":
+    elif entered_code != "":  # Показываем ошибку только если что-то было введено
         st.error("Кодовое слово неверно")
+
 
 # --- Отрисовка страниц ---
 # Если пользователь еще не аутентифицирован, показываем страницу входа.
-if not st.session_state["authenticated"]:
+if not st.session_state['authenticated']:
     # Центрируем контент с помощью колонок
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
@@ -82,13 +88,17 @@ if not st.session_state["authenticated"]:
             unsafe_allow_html=True
         )
 
+        # Поле для ввода. type="password" скроет вводимые символы.
+        # Ключ 'codeword_input' используется для доступа к значению в st.session_state
         st.text_input(
             "Кодовое слово",
             label_visibility="collapsed",
             key="codeword_input",
             type="password",
-            on_change=check_codeword
+            on_change=check_codeword  # Проверяем при нажатии Enter
         )
+
+        # Кнопка подтверждения
         st.button("Подтвердить", on_click=check_codeword)
 
 # Если пользователь успешно вошел, показываем страницу с промокодом.
@@ -121,7 +131,7 @@ else:
     IMAGE_DATA_URI = image_to_data_uri(IMAGE_PATH)
 
     st.markdown(
-        "<h3 style='text-align: center; font-family: Calibri;'>Твоя фотография</h3>",
+        "<h3 style='text-align: center; font-family: Calibri;'>Твоя картинка:</h3>",
         unsafe_allow_html=True
     )
     st.markdown(f"""
@@ -142,7 +152,7 @@ else:
     )
     st.markdown(f"""
     <div style="
-        background-color: #FFFFFF;
+        background-color: #FFFFFF;  /* ИЗМЕНЕНИЕ: Фон изменен на белый */
         border-radius: 0.5rem;
         padding: 1em;
         font-family: monospace;
