@@ -117,7 +117,7 @@ else:
     st.balloons()
 
     st.markdown(
-        f"<h1 style='text-align: center; font-family: Calibri;'>{PERSON_NAME}, с днем рождения!</h1>",</h1>",
+        f"<h1 style='text-align: center; font-family: Calibri;'>{PERSON_NAME}, с днем рождения!</h1>,</h1>",
         unsafe_allow_html=True
     )
     st.markdown(
