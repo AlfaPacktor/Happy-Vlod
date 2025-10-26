@@ -138,7 +138,7 @@ else:
 
     # Блок с промокодом
     st.markdown(
-        "<h3 style='text-align: center; font-family: Calibri;'>Твой промокод на дрифт 28.10.2025:</h3>",
+        "<h3 style='text-align: center; font-family: Calibri; font-color: black;'>Твой промокод на дрифт 28.10.2025:</h3>",
         unsafe_allow_html=True
     )
     st.markdown(f"""
