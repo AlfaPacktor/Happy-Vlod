@@ -150,7 +150,7 @@ else:
         font-size: 1.25em;
         text-align: center;
         overflow-wrap: break-word;
-        color: #F13A13;  /* НОВОЕ: цвет шрифта (замените на свой) */
+        color: #A47C45;
     ">
         {PROMO_CODE}
     </div>
