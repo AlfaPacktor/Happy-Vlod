@@ -94,7 +94,7 @@ else:
     st.markdown("""
     <style>
     .stApp {
-        background-image: linear-gradient(to top, #FFDDE1, #FFFFFF);
+        background-image: linear-gradient(to top, #F13A13, #FFFFFF);
         background-attachment: fixed;
         background-size: cover;
     }
