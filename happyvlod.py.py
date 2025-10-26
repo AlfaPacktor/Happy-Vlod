@@ -10,9 +10,7 @@ PROMO_CODE = "17963"
 
 # Укажите путь к файлу в репозитории:
 # Если файл лежит рядом с app.py:
-IMAGE_FILE_NAME = "my_photo.jpg"
-# Если файл в папке assets, раскомментируйте:
-# IMAGE_FILE_NAME = "assets/my_photo.jpg"
+IMAGE_FILE_NAME = "my_photo.jpg.jpg"
 
 IMAGE_PATH = Path(__file__).parent / IMAGE_FILE_NAME
 
