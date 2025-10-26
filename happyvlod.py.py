@@ -1,9 +1,27 @@
 import streamlit as st
+from pathlib import Path
+import base64
+import mimetypes
 
 # --- Константы и настройки ---
 SECRET_CODEWORD = "Лейкопластер"
 PERSON_NAME = "Лейкопластер"
 PROMO_CODE = "17963"
+
+IMAGE_FILE_NAME = "my_photo.jpg"
+
+def image_to_data_uri(path: Path) -> str:
+    """
+    Читает файл, кодирует содержимое в base64 и формирует data URI,
+    чтобы картинку можно было вставить в <img src="..."> без внешних ссылок.
+    """
+    mime, _ = mimetypes.guess_type(str(path))
+    if mime is None:
+        # На всякий случай, если тип не распознался
+        mime = "image/jpeg"
+    encoded = base64.b64encode(path.read_bytes()).decode("ascii")
+    return f"data:{mime};base64,{encoded}"
+
 
 # --- Настройка страницы ---
 # Устанавливаем заголовок и иконку для вкладки в браузере.
@@ -113,6 +131,25 @@ else:
     )
     
     st.markdown("---")
+
+   IMAGE_DATA_URI = image_to_data_uri(IMAGE_PATH)
+# Заголовок перед картинкой (можно поменять текст или убрать)
+st.markdown(
+    "<h3 style='text-align: center; font-family: Calibri;'>Твоя картинка</h3>",
+    unsafe_allow_html=True
+)
+# Карточка с картинкой (оформление похоже на блок промокода)
+st.markdown(f"""
+<div style="
+    background-color: #FFFFFF;
+    border-radius: 0.5rem;
+    padding: 1em;
+    text-align: center;
+">
+    <img src="{IMAGE_DATA_URI}" style="max-width: 100%; border-radius: 0.5rem;" />
+</div>
+""", unsafe_allow_html=True)
+
     
     st.markdown(
         "<h3 style='text-align: center; font-family: Calibri;'>Твой промокод на дрифт 28.10.2025:",
